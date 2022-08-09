@@ -13,7 +13,7 @@ ADD_LIBRARY(wxCmdTools STATIC
 )
 
 TARGET_INCLUDE_DIRECTORIES(wxCmdTools INTERFACE ${CMAKE_CURRENT_SOURCE_DIR}/include)
-TARGET_PRECOMPILE_HEADERS(wxCmdTool PRIVATE StdWx.h)
+TARGET_PRECOMPILE_HEADERS(wxCmdTools PRIVATE src/StdWx.h)
 
 ConfigureWxWidgetsUsage(wxCmdTools)
 ConfigureSourceEncoding(wxCmdTools)
