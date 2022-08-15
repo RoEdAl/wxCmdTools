@@ -49,13 +49,15 @@ bool wxCmdTool::FindExecutable(const wxFileName& dir, const wxString& name, cons
     wxASSERT(dir.IsOk());
 
     wxFileName fn(dir);
-    for(wxArrayString::const_iterator i=subDirs.begin(), end = subDirs.end(); i != end; ++i)
+    for(const auto& i : subDirs)
     {
-        fn.AppendDir(*i);
+        fn.AppendDir(i);
     }
 
+    const wxString exeExt = get_exe_ext();
+
     fn.SetName(name);
-    fn.SetExt(get_exe_ext());
+    fn.SetExt(exeExt);
 
     if (fn.IsFileExecutable())
     {
@@ -66,7 +68,7 @@ bool wxCmdTool::FindExecutable(const wxFileName& dir, const wxString& name, cons
     {
         wxFileName res;
         res.SetName(name);
-        res.SetExt(get_exe_ext());
+        res.SetExt(exeExt);
 
         exe = res;
         return false;
@@ -126,9 +128,9 @@ bool wxCmdTool::FindExecutable(const wxFileName& dir, const wxString& name, cons
 
         wxArrayString topSubDirs;
         enum_subdirs(dir.GetFullPath(), topSubDir.Append("-*"), topSubDirs);
-        for (wxArrayString::const_iterator i = topSubDirs.begin(), end = topSubDirs.end(); i != end; ++i)
+        for(const auto& i : topSubDirs)
         {
-            subDirs[0] = *i;
+            subDirs[0] = i;
             if (FindExecutable(dir, name, subDirs, exe))
             {
                 return true;
@@ -206,6 +208,9 @@ bool wxCmdTool::FindTool(wxCmdTool::TOOL tool, wxFileName& exe)
         case TOOL_MUTOOL:
         return FindExecutable("mutool", "mupdf*", exe);
 
+        case TOOL_SUMATRA_PDF:
+        return FindExecutable("SumatraPDF", "SumatraPDF", exe);
+
         default:
         return false;
     }
@@ -235,6 +240,9 @@ bool wxCmdTool::FindLocalTool(wxCmdTool::TOOL tool, wxFileName& exe)
 
         case TOOL_MUTOOL:
         return FindLocalExecutable("mutool", "mupdf*", exe);
+
+        case TOOL_SUMATRA_PDF:
+        return FindLocalExecutable("SumatraPDF", "SumatraPDF", exe);
 
         default:
         return false;

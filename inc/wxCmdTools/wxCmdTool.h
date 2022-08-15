@@ -20,7 +20,8 @@ class wxCmdTool
 		TOOL_CMAKE,
 		TOOL_FFPROBE,
 		TOOL_IMAGE_MAGICK,
-		TOOL_MUTOOL
+		TOOL_MUTOOL,
+		TOOL_SUMATRA_PDF
 	};
 	
 	static bool FindExecutable(const wxString&, const wxString&, wxFileName&);
