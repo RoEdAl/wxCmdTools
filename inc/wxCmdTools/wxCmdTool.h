@@ -24,8 +24,12 @@ class wxCmdTool
 	};
 	
 	static bool FindExecutable(const wxString&, const wxString&, wxFileName&);
+	static bool FindLocalExecutable(const wxString&, const wxString&, wxFileName&);
 	static bool FindTool(TOOL, wxFileName&);
+	static bool FindLocalTool(TOOL, wxFileName&);
+
 	static void GetSearchDirectories(wxArrayString&);
+	static void GetLocalSearchDirectories(wxArrayString&);
 
 	protected:
 

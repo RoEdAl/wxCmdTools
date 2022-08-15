@@ -173,6 +173,14 @@ bool wxCmdTool::FindExecutable(const wxString& name, const wxString& postFix, wx
         FindExecutableEnv("ProgramFiles(x86)", name, postFix, exe);
 }
 
+bool wxCmdTool::FindLocalExecutable(const wxString& name, const wxString& postFix, wxFileName& exe)
+{
+    return
+        CheckExecutable(name, exe) ||
+        FindExecutable(get_exe_local_sub_dir(), name, postFix, exe) ||
+        FindExecutable(get_exe_sub_dir(), name, postFix, exe);
+}
+
 bool wxCmdTool::FindTool(wxCmdTool::TOOL tool, wxFileName& exe)
 {
     switch (tool)
@@ -197,6 +205,36 @@ bool wxCmdTool::FindTool(wxCmdTool::TOOL tool, wxFileName& exe)
 
         case TOOL_MUTOOL:
         return FindExecutable("mutool", "mupdf*", exe);
+
+        default:
+        return false;
+    }
+}
+
+bool wxCmdTool::FindLocalTool(wxCmdTool::TOOL tool, wxFileName& exe)
+{
+    switch (tool)
+    {
+        case TOOL_FFMPEG:
+        return FindLocalExecutable("ffmpeg", "ffmpeg/bin", exe);
+
+        case TOOL_FFPROBE:
+        return FindLocalExecutable("ffprobe", "ffmpeg/bin", exe);
+
+        case TOOL_MKVMERGE:
+        return FindLocalExecutable("mkvmerge", "MKVToolNix", exe);
+
+        case TOOL_MKVPROPEDIT:
+        return FindLocalExecutable("mkvpropedit", "MKVToolNix", exe);
+
+        case TOOL_CMAKE:
+        return FindLocalExecutable("cmake", "CMake/bin", exe);
+
+        case TOOL_IMAGE_MAGICK:
+        return FindLocalExecutable("magick", "ImageMagick*", exe);
+
+        case TOOL_MUTOOL:
+        return FindLocalExecutable("mutool", "mupdf*", exe);
 
         default:
         return false;
@@ -232,4 +270,9 @@ void wxCmdTool::GetSearchDirectories(wxArrayString& searchDirs)
     add_path_from_env_var("ProgramFiles(x86)", searchDirs);
 }
 
+void wxCmdTool::GetLocalSearchDirectories(wxArrayString& searchDirs)
+{
+    searchDirs.Add(get_exe_local_sub_dir().GetFullPath());
+    searchDirs.Add(get_exe_sub_dir().GetFullPath());
+}
 
