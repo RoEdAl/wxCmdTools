@@ -44,6 +44,8 @@ class wxCmdTool
 	static wxString get_exe_ext();
 	static wxFileName get_exe_sub_dir();
 	static wxFileName get_exe_local_sub_dir();
+	static wxFileName get_exe_file_name(const wxString&);
+	static wxFileName get_file_name(const wxString&, const wxString&);
 };
 
 #endif

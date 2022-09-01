@@ -10,6 +10,19 @@ wxString wxCmdTool::get_exe_ext()
     return fn.GetExt();
 }
 
+wxFileName wxCmdTool::get_file_name(const wxString& name, const wxString& ext)
+{
+    wxFileName res;
+    res.SetName(name);
+    res.SetExt(ext);
+    return res;
+}
+
+wxFileName wxCmdTool::get_exe_file_name(const wxString& name)
+{
+    return get_file_name(name, get_exe_ext());
+}
+
 wxFileName wxCmdTool::get_exe_sub_dir()
 {
     wxFileName fn(wxStandardPaths::Get().GetExecutablePath());
@@ -39,6 +52,7 @@ bool wxCmdTool::FindExecutableEnv(const wxString& env, const wxString& name, con
     wxString envVal;
     if (!wxGetEnv(env, &envVal))
     {
+        exe = get_exe_file_name(name);
         return false;
     }
     return FindExecutable(wxFileName::DirName(envVal), name, postFix, exe);
@@ -66,11 +80,7 @@ bool wxCmdTool::FindExecutable(const wxFileName& dir, const wxString& name, cons
     }
     else
     {
-        wxFileName res;
-        res.SetName(name);
-        res.SetExt(exeExt);
-
-        exe = res;
+        exe = get_file_name(name, exeExt);
         return false;
     }
 }
@@ -110,6 +120,7 @@ bool wxCmdTool::FindExecutable(const wxFileName& dir, const wxString& name, cons
 {
     if (!dir.DirExists())
     {
+        exe = get_exe_file_name(name);
         return false;
     }
 
@@ -137,6 +148,7 @@ bool wxCmdTool::FindExecutable(const wxFileName& dir, const wxString& name, cons
             }
         }
 
+        exe = get_exe_file_name(name);
         return false;
     }
     else
@@ -150,6 +162,7 @@ bool wxCmdTool::CheckExecutable(const wxString& name, wxFileName& exe)
     wxString envVal;
     if (!wxGetEnv(name.Upper(), &envVal))
     {
+        exe = get_exe_file_name(name);
         return false;
     }
 
@@ -160,6 +173,7 @@ bool wxCmdTool::CheckExecutable(const wxString& name, wxFileName& exe)
         return true;
     }
 
+    exe = get_exe_file_name(name);
     return false;
 }
 
